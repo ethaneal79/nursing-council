@@ -1,0 +1,12 @@
+package com.msnc.nursingcouncil.enums;
+
+public enum DocumentType {
+    PHOTOGRAPH,
+    IDENTITY_PROOF,
+    COURSE_CERTIFICATE,
+    MARKSHEET,
+    INTERNSHIP_CERTIFICATE,
+    CHARACTER_CERTIFICATE,
+    REFRESHER_CERTIFICATE,
+    ID_PROOF_RENEWAL
+}

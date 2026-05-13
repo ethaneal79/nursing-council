@@ -60,6 +60,7 @@ export default function RegisterPage() {
   const completed = Array.from({ length: step - 1 }, (_, i) => i + 1);
 
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+<<<<<<< HEAD
   const next = () => {
   setError('');
 
@@ -81,6 +82,9 @@ export default function RegisterPage() {
 
   setStep((s) => Math.min(s + 1, 4));
 };
+=======
+  const next = () => { setError(''); setStep((s) => Math.min(s + 1, 4)); };
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
   const back = () => { setError(''); setStep((s) => Math.max(s - 1, 1)); };
 
   const handleFileChange = (docType) => (e) => {
@@ -89,6 +93,7 @@ export default function RegisterPage() {
   };
 
   const handleSubmit = async () => {
+<<<<<<< HEAD
   setError('');
 
   if (!form.fullName) return setError('Full name is required');
@@ -118,6 +123,29 @@ export default function RegisterPage() {
       paymentMethod: form.paymentMethod,
       transactionRef: form.transactionRef || null,
     });
+=======
+    setLoading(true);
+    setError('');
+    try {
+      // 1 – submit registration (personal + course + payment)
+      const res = await submitRegistration({
+        fullName:            form.fullName,
+        dateOfBirth:         form.dateOfBirth,
+        gender:              form.gender,
+        nationality:         form.nationality,
+        email:               form.email,
+        mobile:              form.mobile,
+        permanentAddress:    form.permanentAddress,
+        courseName:          form.courseName,
+        yearOfPassing:       Number(form.yearOfPassing),
+        institutionName:     form.institutionName,
+        universityOrBoard:   form.universityOrBoard,
+        examRollNumber:      form.examRollNumber || undefined,
+        previousCouncilRegNo: form.previousCouncilRegNo || undefined,
+        paymentMethod:       form.paymentMethod,
+        transactionRef:      form.transactionRef || undefined,
+      });
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
 
       const refNumber = res.data.referenceNumber;
 

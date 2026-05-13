@@ -151,6 +151,10 @@ export const staffLogin = (username, password) =>
 // ─────────────────────────────────────────────────────────────────────────────
 // ADMIN  (SUPERUSER only)
 // ─────────────────────────────────────────────────────────────────────────────
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
 const authHeader = (token) => ({ headers: { Authorization: `Bearer ${token}` } });
 
 export const adminGetDashboard = (token) =>

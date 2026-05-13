@@ -33,7 +33,10 @@ const StatCard = ({ label, value, color }) => (
 );
 
 export default function AdminPortalPage({ token }) {
+<<<<<<< HEAD
   console.log("ADMIN TOKEN =", token);
+=======
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
   const [tab, setTab] = useState('dashboard');
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState({ username: '', fullName: '', email: '', password: '', role: 'DEALING_ASSISTANT' });
@@ -57,7 +60,11 @@ export default function AdminPortalPage({ token }) {
     const loadUsers = useCallback(async () => {
       try {
         const res = await adminGetUsers(token);
+<<<<<<< HEAD
         setUsers(Array.isArray(res) ? res : (res?.data ?? []));
+=======
+        setUsers(res || []);
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
       } catch (e) {
         setMsg({ type: 'error', text: e.message });
       }

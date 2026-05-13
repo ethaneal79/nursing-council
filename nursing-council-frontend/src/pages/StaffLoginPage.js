@@ -7,6 +7,7 @@ export default function StaffLoginPage({ onLogin }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+<<<<<<< HEAD
  async function handleSubmit(e) {
   e.preventDefault();
   setLoading(true);
@@ -32,6 +33,21 @@ export default function StaffLoginPage({ onLogin }) {
     setLoading(false);
   }
 }
+=======
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true); setError(null);
+    try {
+      const res = await staffLogin(form.username, form.password);
+      if (res.data?.token) {
+        onLogin(res.data);
+      } else {
+        setError('Login failed. Please check your credentials.');
+      }
+    } catch (e) { setError(e.message || 'Login failed'); }
+    setLoading(false);
+  }
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
 
   return (
     <div style={{

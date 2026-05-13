@@ -27,7 +27,11 @@ public class RegisteredNurse {
     private Application application;
 
     @Enumerated(EnumType.STRING)
+<<<<<<< HEAD
     @Column(name = "course_name", nullable = false)
+=======
+    @Column(name = "course_name", nullable = false, columnDefinition = "course_type")
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
     private CourseType courseName;
 
     @Column(name = "institution_name", nullable = false, length = 300)

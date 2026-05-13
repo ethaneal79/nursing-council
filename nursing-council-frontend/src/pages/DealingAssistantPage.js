@@ -35,7 +35,11 @@ const loadUnprocessed = useCallback(async () => {
 
     console.log("UNPROCESSED:", res);
 
+<<<<<<< HEAD
     setApps(Array.isArray(res.data) ? res.data : []);
+=======
+    setApps(res || []);
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
   } catch (e) {
     setMsg({ type: 'error', text: e.message });
   }
@@ -47,7 +51,11 @@ const loadAll = useCallback(async () => {
 
     console.log("ALL APPS:", res);
 
+<<<<<<< HEAD
     setApps(Array.isArray(res.data) ? res.data : []);
+=======
+    setApps(res || []);
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
   } catch (e) {
     setMsg({ type: 'error', text: e.message });
   }
@@ -59,7 +67,11 @@ const loadReport = useCallback(async () => {
 
     console.log("REPORT:", res);
 
+<<<<<<< HEAD
     setReport(res.data || {});
+=======
+    setReport(res || {});
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
   } catch (e) {
     setMsg({ type: 'error', text: e.message });
   }

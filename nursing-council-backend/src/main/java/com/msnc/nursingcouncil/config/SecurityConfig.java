@@ -37,6 +37,7 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+<<<<<<< HEAD
             	    .requestMatchers(HttpMethod.POST, "/registration", "/api/registration/*/documents").permitAll()
             	    .requestMatchers(HttpMethod.POST, "/renewal", "/api/renewal/*/documents").permitAll()
             	    .requestMatchers(HttpMethod.GET,  "/renewal/verify").permitAll()
@@ -52,6 +53,25 @@ public class SecurityConfig {
 
             	    .anyRequest().authenticated()
             	)
+=======
+                // Public endpoints (applicant-facing)
+                .requestMatchers(HttpMethod.POST, "/registration", "/registration/*/documents").permitAll()
+                .requestMatchers(HttpMethod.POST, "/renewal", "/renewal/*/documents").permitAll()
+                .requestMatchers(HttpMethod.GET,  "/renewal/verify").permitAll()
+                .requestMatchers(HttpMethod.POST, "/verify").permitAll()
+                .requestMatchers(HttpMethod.POST, "/status/track").permitAll()
+                .requestMatchers(HttpMethod.GET,  "/notices/**").permitAll()
+                // Auth
+                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                // Admin only
+                .requestMatchers("/admin/**").hasRole("SUPERUSER")
+                // Registrar + Admin
+                .requestMatchers("/registrar/**").hasAnyRole("SUPERUSER", "REGISTRAR")
+                // Dealing Assistant + above
+                .requestMatchers("/da/**").hasAnyRole("SUPERUSER", "REGISTRAR", "DEALING_ASSISTANT")
+                .anyRequest().authenticated()
+            )
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -60,11 +80,15 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
+<<<<<<< HEAD
         config.setAllowedOrigins(List.of(
         	    "http://localhost:3000",
         	    "http://127.0.0.1:3000",
         	    "https://msnc.gov.in"
         	));
+=======
+        config.setAllowedOrigins(List.of("http://localhost:3000", "https://msnc.gov.in"));
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

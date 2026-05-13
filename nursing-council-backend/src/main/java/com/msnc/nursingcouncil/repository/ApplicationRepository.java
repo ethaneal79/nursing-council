@@ -36,6 +36,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     long countByApplicationType(ApplicationType applicationType);
 
+<<<<<<< HEAD
     @Query("""
     	       SELECT COUNT(a)
     	       FROM Application a
@@ -43,6 +44,10 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     	       WHERE cd.courseName = :courseType
     	       """)
     	long countByCourseType(CourseType courseType);
+=======
+    @Query("SELECT COUNT(a) FROM Application a JOIN a.courseDetail cd WHERE cd.courseName = :courseType")
+    long countByCourseType(CourseType courseType);
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
 
     // ── Registrar: all applications for approval review ───────────────────
     @Query("SELECT a FROM Application a WHERE a.status IN ('SUBMITTED','DOCUMENTS_VERIFIED','COUNCIL_REVIEW') ORDER BY a.submittedAt DESC")

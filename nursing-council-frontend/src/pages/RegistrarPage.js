@@ -36,7 +36,11 @@ const loadApps = useCallback(async () => {
 
     console.log("REGISTRAR APPS:", res);
 
+<<<<<<< HEAD
     setApps(res?.data || []);
+=======
+    setApps(res || []);
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
   } catch (e) {
     setMsg({ type: 'error', text: e.message });
   }

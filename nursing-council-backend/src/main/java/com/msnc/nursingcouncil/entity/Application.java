@@ -28,11 +28,19 @@ public class Application {
     private Applicant applicant;
 
     @Enumerated(EnumType.STRING)
+<<<<<<< HEAD
     @Column(name = "application_type", nullable = false)
     private ApplicationType applicationType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+=======
+    @Column(name = "application_type", nullable = false, columnDefinition = "application_type")
+    private ApplicationType applicationType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "application_status")
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
     @Builder.Default
     private ApplicationStatus status = ApplicationStatus.SUBMITTED;
 

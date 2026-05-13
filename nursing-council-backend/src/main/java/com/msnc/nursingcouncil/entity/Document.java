@@ -21,7 +21,11 @@ public class Document {
     private Application application;
 
     @Enumerated(EnumType.STRING)
+<<<<<<< HEAD
     @Column(name = "document_type", nullable = false)
+=======
+    @Column(name = "document_type", nullable = false, columnDefinition = "document_type")
+>>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
     private DocumentType documentType;
 
     @Column(name = "file_name", nullable = false, length = 255)

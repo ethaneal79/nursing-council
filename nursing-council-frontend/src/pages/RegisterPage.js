@@ -60,31 +60,162 @@ export default function RegisterPage() {
   const completed = Array.from({ length: step - 1 }, (_, i) => i + 1);
 
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
-<<<<<<< HEAD
+  const validateStep = () => {
+
+  // STEP 1 — PERSONAL DETAILS
+  if (step === 1) {
+
+    if (!form.fullName.trim()) {
+      setError('Full name is required');
+      return false;
+    }
+
+    if (!form.dateOfBirth) {
+      setError('Date of birth is required');
+      return false;
+    }
+
+    if (!form.gender) {
+      setError('Please select gender');
+      return false;
+    }
+
+    if (!form.email.trim()) {
+      setError('Email is required');
+      return false;
+    }
+
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(form.email)) {
+      setError('Enter valid email address');
+      return false;
+    }
+
+    const mobileRegex =
+      /^[0-9]{10}$/;
+
+    if (!mobileRegex.test(form.mobile)) {
+      setError('Mobile number must be 10 digits');
+      return false;
+    }
+
+    if (!form.permanentAddress.trim()) {
+      setError('Permanent address is required');
+      return false;
+    }
+  }
+
+  // STEP 2 — COURSE DETAILS
+  if (step === 2) {
+
+    if (!form.courseName) {
+      setError('Please select course');
+      return false;
+    }
+
+    if (!form.yearOfPassing) {
+      setError('Year of passing is required');
+      return false;
+    }
+
+    const year = Number(form.yearOfPassing);
+
+    if (
+      year < 1950 ||
+      year > new Date().getFullYear()
+    ) {
+      setError('Enter valid year of passing');
+      return false;
+    }
+
+    if (!form.institutionName.trim()) {
+      setError('Institution name is required');
+      return false;
+    }
+
+    if (!form.universityOrBoard.trim()) {
+      setError('University/Board is required');
+      return false;
+    }
+    if (!form.examRollNumber.trim()) {
+  setError('Examination roll number is required');
+  return false;
+}
+  }
+
+  // STEP 3 — DOCUMENTS
+  if (step === 3) {
+
+    const requiredDocs = [
+      'PHOTOGRAPH',
+      'IDENTITY_PROOF',
+      'COURSE_CERTIFICATE',
+      'MARKSHEET',
+      'INTERNSHIP_CERTIFICATE'
+    ];
+
+    for (const doc of requiredDocs) {
+
+      if (!files[doc]) {
+        setError(`${doc.replaceAll('_', ' ')} is required`);
+        return false;
+      }
+
+      const file = files[doc];
+
+      // MAX 5 MB
+      if (file.size > 5 * 1024 * 1024) {
+        setError(`${file.name} exceeds 5 MB`);
+        return false;
+      }
+
+      // FILE TYPE
+      const allowed = [
+        'application/pdf',
+        'image/jpeg',
+        'image/jpg',
+        'image/png'
+      ];
+
+      if (!allowed.includes(file.type)) {
+        setError(`${file.name} has invalid format`);
+        return false;
+      }
+    }
+  }
+
+  // STEP 4 — PAYMENT
+  if (step === 4) {
+
+    if (!form.paymentMethod) {
+      setError('Select payment method');
+      return false;
+    }
+
+    if (
+      form.paymentMethod !== 'DEMAND_DRAFT' &&
+      !form.transactionRef.trim()
+    ) {
+      setError('Transaction reference is required');
+      return false;
+    }
+  }
+
+  setError('');
+  return true;
+};
   const next = () => {
+
   setError('');
 
-  if (step === 1) {
-    if (!form.fullName) return setError('Full name is required');
-    if (!form.dateOfBirth) return setError('Date of birth is required');
-    if (!form.gender) return setError('Please select gender');
-    if (!form.email) return setError('Email is required');
-    if (!form.mobile) return setError('Mobile number is required');
-    if (!form.permanentAddress) return setError('Permanent address is required');
-  }
+  if (validateStep()) {
 
-  if (step === 2) {
-    if (!form.courseName) return setError('Course name is required');
-    if (!form.yearOfPassing) return setError('Year of passing is required');
-    if (!form.institutionName) return setError('Institution name is required');
-    if (!form.universityOrBoard) return setError('University/Board is required');
-  }
+    setStep((s) => Math.min(s + 1, 4));
 
-  setStep((s) => Math.min(s + 1, 4));
+  }
 };
-=======
-  const next = () => { setError(''); setStep((s) => Math.min(s + 1, 4)); };
->>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
   const back = () => { setError(''); setStep((s) => Math.max(s - 1, 1)); };
 
   const handleFileChange = (docType) => (e) => {
@@ -93,37 +224,9 @@ export default function RegisterPage() {
   };
 
   const handleSubmit = async () => {
-<<<<<<< HEAD
-  setError('');
-
-  if (!form.fullName) return setError('Full name is required');
-  if (!form.dateOfBirth) return setError('Date of birth is required');
-  if (!form.gender) return setError('Please select gender');
-  if (!form.email) return setError('Email is required');
-  if (!form.mobile) return setError('Mobile number is required');
-  if (!form.permanentAddress) return setError('Permanent address is required');
-
-  setLoading(true);
-
-  try {
-    const res = await submitRegistration({
-      fullName: form.fullName,
-      dateOfBirth: form.dateOfBirth,
-      gender: form.gender,
-      nationality: form.nationality,
-      email: form.email,
-      mobile: form.mobile,
-      permanentAddress: form.permanentAddress,
-      courseName: form.courseName,
-      yearOfPassing: Number(form.yearOfPassing),
-      institutionName: form.institutionName,
-      universityOrBoard: form.universityOrBoard,
-      examRollNumber: form.examRollNumber || null,
-      previousCouncilRegNo: form.previousCouncilRegNo || null,
-      paymentMethod: form.paymentMethod,
-      transactionRef: form.transactionRef || null,
-    });
-=======
+    if (!validateStep()) {
+  return;
+}
     setLoading(true);
     setError('');
     try {
@@ -145,7 +248,6 @@ export default function RegisterPage() {
         paymentMethod:       form.paymentMethod,
         transactionRef:      form.transactionRef || undefined,
       });
->>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
 
       const refNumber = res.data.referenceNumber;
 
@@ -263,7 +365,7 @@ export default function RegisterPage() {
             <FormGroup label="University/Board" required>
               <Input placeholder="Affiliated university or board" value={form.universityOrBoard} onChange={set('universityOrBoard')} />
             </FormGroup>
-            <FormGroup label="Examination roll number">
+            <FormGroup label="Examination roll number" required>
               <Input placeholder="Roll number on marksheet" value={form.examRollNumber} onChange={set('examRollNumber')} />
             </FormGroup>
             <FormGroup label="Previous council reg. no.">

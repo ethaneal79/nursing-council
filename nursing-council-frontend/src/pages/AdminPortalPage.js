@@ -33,10 +33,6 @@ const StatCard = ({ label, value, color }) => (
 );
 
 export default function AdminPortalPage({ token }) {
-<<<<<<< HEAD
-  console.log("ADMIN TOKEN =", token);
-=======
->>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
   const [tab, setTab] = useState('dashboard');
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState({ username: '', fullName: '', email: '', password: '', role: 'DEALING_ASSISTANT' });
@@ -58,17 +54,19 @@ export default function AdminPortalPage({ token }) {
 });
 
     const loadUsers = useCallback(async () => {
-      try {
-        const res = await adminGetUsers(token);
-<<<<<<< HEAD
-        setUsers(Array.isArray(res) ? res : (res?.data ?? []));
-=======
-        setUsers(res || []);
->>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
-      } catch (e) {
-        setMsg({ type: 'error', text: e.message });
-      }
-    }, [token]);
+  try {
+    const res = await adminGetUsers(token);
+
+    console.log("USERS API:", res);
+
+    setUsers(Array.isArray(res.data) ? res.data : []);
+
+  } catch (e) {
+    console.error(e);
+    setMsg({ type: 'error', text: e.message });
+    setUsers([]);
+  }
+}, [token]);
 
  const loadStats = useCallback(async () => {
   try {
@@ -191,7 +189,7 @@ export default function AdminPortalPage({ token }) {
               </tr>
             </thead>
             <tbody>
-              {users.map((u, i) => (
+              {Array.isArray(users) && users.map((u, i) => (
                 <tr key={u.id} style={{ borderTop: `1px solid ${COLORS.border}`, background: i % 2 === 0 ? '#fff' : '#fafbfd' }}>
                   <td style={{ padding: '10px 14px', fontSize: 14, fontWeight: 600 }}>{u.username}</td>
                   <td style={{ padding: '10px 14px', fontSize: 14 }}>{u.fullName}</td>

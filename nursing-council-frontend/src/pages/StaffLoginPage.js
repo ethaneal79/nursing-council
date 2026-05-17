@@ -7,47 +7,29 @@ export default function StaffLoginPage({ onLogin }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-<<<<<<< HEAD
- async function handleSubmit(e) {
-  e.preventDefault();
-  setLoading(true);
-  setError(null);
-
-  try {
-    const res = await staffLogin(form.username, form.password);
-
-    console.log("FULL LOGIN RESPONSE =", res);
-    console.log("LOGIN DATA =", res?.data);
-    console.log("TOKEN =", res?.data?.token);
-
-    if (res?.data?.token) {
-      onLogin(res.data);
-    } else {
-      setError("Token missing in login response");
-    }
-
-  } catch (e) {
-    console.error("LOGIN ERROR =", e);
-    setError(e.message || "Login failed");
-  } finally {
-    setLoading(false);
-  }
-}
-=======
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true); setError(null);
     try {
-      const res = await staffLogin(form.username, form.password);
-      if (res.data?.token) {
-        onLogin(res.data);
-      } else {
-        setError('Login failed. Please check your credentials.');
+     const res = await staffLogin(
+  form.username,
+  form.password
+);
+
+console.log(res);
+
+if (res?.data?.token) {
+
+  onLogin(res.data);
+
+} else {
+
+  setError('Login failed. Please check your credentials.');
+
       }
     } catch (e) { setError(e.message || 'Login failed'); }
     setLoading(false);
   }
->>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
 
   return (
     <div style={{

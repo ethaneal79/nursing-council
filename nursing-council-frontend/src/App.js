@@ -14,41 +14,6 @@ import DealingAssistantPage from './pages/DealingAssistantPage';
 import RegistrarPage from './pages/RegistrarPage';
 import { COLORS } from './styles/theme';
 
-<<<<<<< HEAD
-// Staff-only pages that require an active session to display
-const ROLE_PAGE = {
-  SUPERUSER:         'admin',
-  REGISTRAR:         'registrar',
-  DEALING_ASSISTANT: 'da',
-};
-const STAFF_PAGES = Object.values(ROLE_PAGE);
-
-export default function App() {
-  const [staffSession, setStaffSession] = React.useState(() => {
-    const saved = localStorage.getItem("staffSession");
-    return saved ? JSON.parse(saved) : null;
-  });
-
-  // BUG FIX: If the last saved page was a staff page but there is no active
-  // staff session (e.g. the session was cleared or expired), fall back to
-  // "home" so the user sees the full page instead of just the TopBar.
-  const [page, setPage] = React.useState(() => {
-    const saved = localStorage.getItem("page") || "home";
-    const session = (() => {
-      try { return JSON.parse(localStorage.getItem("staffSession")); }
-      catch { return null; }
-    })();
-    if (STAFF_PAGES.includes(saved)) {
-  if (!session) return "home";
-  if (ROLE_PAGE[session.role] !== saved) return ROLE_PAGE[session.role] || "home";
-}
-    return saved;
-  });
-
-  React.useEffect(() => {
-    localStorage.setItem("page", page);
-  }, [page]);
-=======
 export default function App() {
   const [page, setPage] = React.useState(() => {
   return localStorage.getItem("page") || "home";});
@@ -59,7 +24,6 @@ export default function App() {
   React.useEffect(() => {
   localStorage.setItem("page", page);
 }, [page]);
->>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
 
   const publicNavItems = [
     { id: "home", label: "Home" },
@@ -72,31 +36,6 @@ export default function App() {
   ];
 
   function handleStaffLogin(data) {
-<<<<<<< HEAD
-    console.log("STAFF SESSION =", data);
-    setStaffSession(data);
-    localStorage.setItem("staffSession", JSON.stringify(data));
-    // Route to correct dashboard based on role
-    if (data.role === 'SUPERUSER') setPage('admin');
-    else if (data.role === 'REGISTRAR') setPage('registrar');
-    else if (data.role === 'DEALING_ASSISTANT') setPage('da');
-  }
-
-  function handleLogout() {
-    setStaffSession(null);
-    localStorage.removeItem("staffSession");
-    setPage('home');
-  }
-
-  // Staff navigation bar shown when logged in
-  const staffNavItems = staffSession ? [
-  staffSession.role === 'SUPERUSER'         && { id: 'admin',     label: '⚙ Admin Portal' },
-  staffSession.role === 'REGISTRAR'         && { id: 'registrar', label: '📋 Registrar' },
-  staffSession.role === 'DEALING_ASSISTANT' && { id: 'da',        label: '🗂 Applications' },
-].filter(Boolean) : [];
-
-  const isStaffPage = STAFF_PAGES.includes(page);
-=======
 
   setStaffSession(data);
 
@@ -121,13 +60,25 @@ export default function App() {
 
   // Staff navigation bar shown when logged in
   const staffNavItems = staffSession ? [
-    staffSession.role === 'SUPERUSER' && { id: 'admin', label: '⚙ Admin Portal' },
-    (staffSession.role === 'REGISTRAR' || staffSession.role === 'SUPERUSER') && { id: 'registrar', label: '📋 Registrar' },
-    { id: 'da', label: '🗂 Applications' },
-  ].filter(Boolean) : [];
+
+  staffSession.role === 'SUPERUSER' && {
+    id: 'admin',
+    label: '⚙ Admin Portal'
+  },
+
+  staffSession.role === 'DEALING_ASSISTANT' && {
+    id: 'da',
+    label: '🗂 DA Dashboard'
+  },
+
+  staffSession.role === 'REGISTRAR' && {
+    id: 'registrar',
+    label: '📋 Registrar Dashboard'
+  }
+
+].filter(Boolean) : [];
 
   const isStaffPage = ['admin', 'registrar', 'da'].includes(page);
->>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
 
   return (
     <div style={{ fontFamily: "'Source Sans 3', sans-serif", background: COLORS.offWhite, minHeight: "100vh" }}>
@@ -183,28 +134,25 @@ export default function App() {
         {page === "staff-login" && !staffSession && (
           <StaffLoginPage onLogin={handleStaffLogin} />
         )}
-        {page === "admin" && staffSession?.role === 'SUPERUSER' && (
-<<<<<<< HEAD
-  <AdminPortalPage token={staffSession.token} />
+       {/* ADMIN ONLY */}
+{page === "admin" &&
+  staffSession?.role === 'SUPERUSER' && (
+    <AdminPortalPage token={staffSession.token} />
 )}
 
-{page === "registrar" && staffSession?.role === 'REGISTRAR' && (
-  <RegistrarPage token={staffSession.token} />
+
+{/* REGISTRAR ONLY */}
+{page === "registrar" &&
+  staffSession?.role === 'REGISTRAR' && (
+    <RegistrarPage token={staffSession.token} />
 )}
 
-{page === "da" && staffSession?.role === 'DEALING_ASSISTANT' && (
-  <DealingAssistantPage token={staffSession.token} />
+
+{/* DA ONLY */}
+{page === "da" &&
+  staffSession?.role === 'DEALING_ASSISTANT' && (
+    <DealingAssistantPage token={staffSession.token} />
 )}
-=======
-          <AdminPortalPage token={staffSession.token} />
-        )}
-        {page === "registrar" && staffSession && (
-          <RegistrarPage token={staffSession.token} />
-        )}
-        {page === "da" && staffSession && (
-          <DealingAssistantPage token={staffSession.token} />
-        )}
->>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
       </main>
 
       {!isStaffPage && <Footer setPage={setPage} />}

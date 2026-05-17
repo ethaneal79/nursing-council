@@ -39,8 +39,105 @@ export default function RenewalPage() {
   const set       = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
   const back      = () => { setError(''); setStep((s) => Math.max(s - 1, 1)); };
 
+  const validateStep = () => {
+
+  // STEP 1
+  if (step === 1) {
+
+    if (!form.registrationNumber.trim()) {
+      setError('Registration number is required');
+      return false;
+    }
+
+    const mobileRegex = /^[0-9]{10}$/;
+
+    if (!mobileRegex.test(form.mobile)) {
+      setError('Mobile number must be 10 digits');
+      return false;
+    }
+
+    if (!form.fullName.trim()) {
+      setError('Full name is required');
+      return false;
+    }
+
+    if (!form.dateOfBirth) {
+      setError('Date of birth is required');
+      return false;
+    }
+  }
+
+  // STEP 2
+  if (step === 2) {
+
+    if (!form.refresherCourseTitle.trim()) {
+      setError('Course title is required');
+      return false;
+    }
+
+    if (!form.refresherYearAttended) {
+      setError('Year attended is required');
+      return false;
+    }
+
+    const year = Number(form.refresherYearAttended);
+
+    if (
+      year < 1950 ||
+      year > new Date().getFullYear()
+    ) {
+      setError('Enter valid year attended');
+      return false;
+    }
+
+    if (!form.refresherOrganisingBody.trim()) {
+      setError('Organising body is required');
+      return false;
+    }
+
+    if (!form.refresherDuration.trim()) {
+      setError('Duration is required');
+      return false;
+    }
+
+    // FILE CHECKS
+
+    if (!files.refresher) {
+      setError('Refresher certificate is required');
+      return false;
+    }
+
+    if (!files.idProof) {
+      setError('ID proof is required');
+      return false;
+    }
+  }
+
+  // STEP 3
+  if (step === 3) {
+
+    if (!form.paymentMethod) {
+      setError('Select payment method');
+      return false;
+    }
+
+    if (
+      form.paymentMethod !== 'DEMAND_DRAFT' &&
+      !form.transactionRef.trim()
+    ) {
+      setError('Transaction reference is required');
+      return false;
+    }
+  }
+
+  setError('');
+  return true;
+};
   // ── Step 1: verify ────────────────────────────────────────────────────────
   const handleVerify = async () => {
+    if (!validateStep()) {
+    return;
+  }
     setLoading(true);
     setError('');
     try {
@@ -174,21 +271,21 @@ export default function RenewalPage() {
             Provide details of any refresher courses or CME programmes completed since your last renewal.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            <FormGroup label="Course / CME title">
+            <FormGroup label="Course / CME title" required>
               <Input placeholder="e.g. Advanced wound care workshop" value={form.refresherCourseTitle} onChange={set('refresherCourseTitle')} />
             </FormGroup>
-            <FormGroup label="Year attended">
+            <FormGroup label="Year attended" required>
               <Input type="number" placeholder="e.g. 2025" value={form.refresherYearAttended} onChange={set('refresherYearAttended')} />
             </FormGroup>
-            <FormGroup label="Organising body">
+            <FormGroup label="Organising body" required>
               <Input placeholder="Hospital / institution name" value={form.refresherOrganisingBody} onChange={set('refresherOrganisingBody')} />
             </FormGroup>
-            <FormGroup label="Duration (hours / days)">
-              <Input placeholder="e.g. 2 days / 16 hours" value={form.refresherDuration} onChange={set('refresherDuration')} />
+            <FormGroup label="Duration (months/ years)" required>
+              <Input placeholder="e.g. 6 months / 2 years" value={form.refresherDuration} onChange={set('refresherDuration')} />
             </FormGroup>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            <FormGroup label="Upload refresher course certificate">
+            <FormGroup label="Upload refresher course certificate" required>
               <label style={{ ...S.fileUpload, cursor: 'pointer', display: 'block' }}>
                 <span style={{ fontSize: 18, display: 'block', marginBottom: 4 }}>📎</span>
                 {files.refresher
@@ -197,7 +294,7 @@ export default function RenewalPage() {
                 <input type="file" accept=".pdf,.jpg,.jpeg,.png" style={{ display: 'none' }} onChange={(e) => setFiles((f) => ({ ...f, refresher: e.target.files[0] }))} />
               </label>
             </FormGroup>
-            <FormGroup label="Upload updated ID proof">
+            <FormGroup label="Upload updated ID proof" required>
               <label style={{ ...S.fileUpload, cursor: 'pointer', display: 'block' }}>
                 <span style={{ fontSize: 18, display: 'block', marginBottom: 4 }}>📎</span>
                 {files.idProof
@@ -209,7 +306,10 @@ export default function RenewalPage() {
           </div>
           <BtnRow>
             <button style={S.btn('secondary')} onClick={back}>← Back</button>
-            <button style={S.btn('primary')} onClick={() => { setError(''); setStep(3); }}>Continue →</button>
+            <button style={S.btn('primary')} onClick={() => { if (!validateStep()) {
+    return;
+  }
+ setStep(3); }}>Continue →</button>
           </BtnRow>
         </SectionCard>
       )}

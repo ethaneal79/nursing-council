@@ -104,6 +104,11 @@ export default function StatusPage() {
                 Reference: <strong>{result.referenceNumber}</strong> &nbsp;|&nbsp;
                 Type: <strong>{result.applicationType === 'NEW_REGISTRATION' ? 'New Registration' : 'Renewal'}</strong>
               </div>
+              {result.registrationNumber && (
+    <div style={{ marginTop: 6, fontSize: 13, color: COLORS.success, fontWeight: 700 }}>
+      Registration Number: {result.registrationNumber}
+    </div>
+  )}
               <div style={{ fontSize: 13, color: COLORS.textMuted }}>
                 Submitted: {new Date(result.submittedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
               </div>

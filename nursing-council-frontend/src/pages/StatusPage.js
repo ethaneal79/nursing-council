@@ -105,10 +105,30 @@ export default function StatusPage() {
                 Type: <strong>{result.applicationType === 'NEW_REGISTRATION' ? 'New Registration' : 'Renewal'}</strong>
               </div>
               {result.registrationNumber && (
-    <div style={{ marginTop: 6, fontSize: 13, color: COLORS.success, fontWeight: 700 }}>
-      Registration Number: {result.registrationNumber}
-    </div>
-  )}
+                <div style={{ marginTop: 6, fontSize: 13, color: COLORS.success, fontWeight: 700 }}>
+                  Registration Number: {result.registrationNumber}
+                </div>
+              )}
+              {result.status === 'COMPLETED' && result.certificateUrl && (
+              <div style={{ marginTop: 12 }}>
+                <a
+                  href={result.certificateUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    display: 'inline-block',
+                    background: '#16a34a',
+                    color: '#fff',
+                    padding: '10px 18px',
+                    borderRadius: 8,
+                    textDecoration: 'none',
+                    fontWeight: 700
+                  }}
+                >
+                  ⬇ Download Certificate
+                </a>
+              </div>
+              )}
               <div style={{ fontSize: 13, color: COLORS.textMuted }}>
                 Submitted: {new Date(result.submittedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
               </div>

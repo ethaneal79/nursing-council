@@ -21,11 +21,7 @@ public class ApplicationStatusHistory {
     private Application application;
 
     @Enumerated(EnumType.STRING)
-<<<<<<< HEAD
-    @Column(nullable = false)
-=======
     @Column(nullable = false, columnDefinition = "application_status")
->>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
     private ApplicationStatus status;
 
     @CreationTimestamp

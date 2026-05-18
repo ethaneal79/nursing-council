@@ -18,7 +18,7 @@ public class RegisteredNurse {
     @Column(name = "registration_number", unique = true, nullable = false, length = 50)
     private String registrationNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "applicant_id", nullable = false)
     private Applicant applicant;
 
@@ -27,11 +27,7 @@ public class RegisteredNurse {
     private Application application;
 
     @Enumerated(EnumType.STRING)
-<<<<<<< HEAD
-    @Column(name = "course_name", nullable = false)
-=======
     @Column(name = "course_name", nullable = false, columnDefinition = "course_type")
->>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
     private CourseType courseName;
 
     @Column(name = "institution_name", nullable = false, length = 300)

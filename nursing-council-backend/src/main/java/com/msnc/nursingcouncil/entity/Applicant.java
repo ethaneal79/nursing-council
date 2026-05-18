@@ -1,6 +1,7 @@
 package com.msnc.nursingcouncil.entity;
 
 import com.msnc.nursingcouncil.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -52,5 +53,6 @@ public class Applicant {
 
     @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonIgnore
     private List<Application> applications = new ArrayList<>();
 }

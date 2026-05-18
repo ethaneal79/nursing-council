@@ -55,6 +55,8 @@ public class StatusServiceImpl implements StatusService {
         return ApplicationResponse.builder()
                 .id(app.getId())
                 .referenceNumber(app.getReferenceNumber())
+                .registrationNumber(app.getRegistrationNumber())
+                .certificateUrl(app.getCertificatePath())
                 .applicationType(app.getApplicationType())
                 .status(app.getStatus())
                 .applicantName(app.getApplicant().getFullName())

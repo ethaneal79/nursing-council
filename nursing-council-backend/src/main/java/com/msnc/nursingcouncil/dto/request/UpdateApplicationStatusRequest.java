@@ -10,9 +10,7 @@ public class UpdateApplicationStatusRequest {
     @NotNull
     private ApplicationStatus status;
 
-    /** Required when status is REJECTED */
     private String rejectionReason;
 
-    /** Optional internal note for any status change */
     private String adminNotes;
 }

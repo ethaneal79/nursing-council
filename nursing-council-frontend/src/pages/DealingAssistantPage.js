@@ -474,7 +474,6 @@ function ReportsSection({ report, allApps }) {
   const REPORT_TABS = [
     { id: 'applicants', label: '👥 Applicants' },
     { id: 'year',       label: '📅 By Year' },
-    { id: 'degree',     label: '🎓 By Degree' },
     { id: 'category',   label: '🗂 By Category' },
   ];
 
@@ -562,12 +561,6 @@ function ReportsSection({ report, allApps }) {
             <BreakdownTable data={byYear} keyLabel="Year" keys={Object.keys(byYear).sort((a, b) => b - a)} />
           </>
         )}
-        {reportTab === 'degree' && (
-          <>
-            <h4 style={{ margin: '0 0 18px', fontSize: 15, fontWeight: 800, color: '#0f172a' }}>🎓 Breakdown by Degree</h4>
-            <BreakdownTable data={byDegree} keyLabel="Degree" keys={Object.keys(byDegree).sort()} />
-          </>
-        )}
         {reportTab === 'category' && (
           <>
             <h4 style={{ margin: '0 0 18px', fontSize: 15, fontWeight: 800, color: '#0f172a' }}>🗂 Breakdown by Category</h4>
@@ -597,20 +590,31 @@ export default function DealingAssistantPage({ token }) {
     setLoading(true);
     try {
       const res = await daGetUnprocessed(token);
-      setApps(Array.isArray(res.data) ? res.data : res.data?.content || []);
+      setApps(Array.isArray(res) ? res : res.data || []);
     } catch (e) { setMsg({ type: 'error', text: e.message }); setApps([]); }
     setLoading(false);
   }, [token]);
 
   const loadAll = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await daGetAllApplications(token);
-      const list = Array.isArray(res.data) ? res.data : res.data?.content || [];
-      setApps(list); setAllApps(list);
-    } catch (e) { setMsg({ type: 'error', text: e.message }); setApps([]); }
-    setLoading(false);
-  }, [token]);
+  setLoading(true);
+
+  try {
+    const res = await daGetAllApplications(token);
+
+    const list = Array.isArray(res)
+      ? res
+      : res.data || [];
+
+    setApps(list);
+    setAllApps(list);
+
+  } catch (e) {
+    setMsg({ type: 'error', text: e.message });
+    setApps([]);
+  }
+
+  setLoading(false);
+}, [token]);
 
   const loadReport = useCallback(async () => {
     try {
@@ -620,7 +624,7 @@ export default function DealingAssistantPage({ token }) {
     if (allApps.length === 0) {
       try {
         const res2 = await daGetAllApplications(token);
-        setAllApps(Array.isArray(res2.data) ? res2.data : res2.data?.content || []);
+        setAllApps(Array.isArray(res2) ? res2 : res2.data || []);
       } catch (_) {}
     }
   }, [token, allApps.length]);

@@ -23,6 +23,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     Optional<Application> findByReferenceNumberAndMobile(String ref, String mobile);
 
     boolean existsByReferenceNumber(String referenceNumber);
+    boolean existsByRegistrationNumber(String registrationNumber);
 
     // ── Status queries (for DA and dashboard) ─────────────────────────────
     List<Application> findAllByStatus(ApplicationStatus status);
@@ -36,20 +37,17 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     long countByApplicationType(ApplicationType applicationType);
 
-<<<<<<< HEAD
-    @Query("""
-    	       SELECT COUNT(a)
-    	       FROM Application a
-    	       LEFT JOIN a.courseDetail cd
-    	       WHERE cd.courseName = :courseType
-    	       """)
-    	long countByCourseType(CourseType courseType);
-=======
     @Query("SELECT COUNT(a) FROM Application a JOIN a.courseDetail cd WHERE cd.courseName = :courseType")
     long countByCourseType(CourseType courseType);
->>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
 
-    // ── Registrar: all applications for approval review ───────────────────
-    @Query("SELECT a FROM Application a WHERE a.status IN ('SUBMITTED','DOCUMENTS_VERIFIED','COUNCIL_REVIEW') ORDER BY a.submittedAt DESC")
-    List<Application> findAllPendingApproval();
+ // ── Registrar: applications verified by DA ─────────────────────────────
+    @Query("""
+    	    SELECT a FROM Application a
+    	    WHERE a.status IN (
+    	        com.msnc.nursingcouncil.enums.ApplicationStatus.DOCUMENTS_VERIFIED,
+    	        com.msnc.nursingcouncil.enums.ApplicationStatus.COUNCIL_REVIEW
+    	    )
+    	    ORDER BY a.submittedAt DESC
+    	""")
+    	List<Application> findAllPendingApproval();
 }

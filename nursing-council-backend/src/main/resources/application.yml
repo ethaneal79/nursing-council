@@ -7,11 +7,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/msnc_user
     username: postgres
-<<<<<<< HEAD
-    password: 1234
-=======
     password: lp9Sh
->>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
@@ -21,6 +17,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    open-in-view: false
     show-sql: false
     properties:
       hibernate:
@@ -56,6 +53,11 @@ app:
     allowed-origins:
       - http://localhost:3000
       - https://msnc.gov.in
+  superuser:
+     username: admin
+     password: Admin@1234
+     email: admin@msnc.gov.in
+     fullname: System Administrator
 
 logging:
   level:
@@ -63,3 +65,4 @@ logging:
     org.hibernate.SQL: WARN
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    

@@ -23,24 +23,16 @@ public class Application {
     @Column(name = "reference_number", unique = true, nullable = false, length = 30)
     private String referenceNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "applicant_id", nullable = false)
     private Applicant applicant;
 
     @Enumerated(EnumType.STRING)
-<<<<<<< HEAD
-    @Column(name = "application_type", nullable = false)
-    private ApplicationType applicationType;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-=======
     @Column(name = "application_type", nullable = false, columnDefinition = "application_type")
     private ApplicationType applicationType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "application_status")
->>>>>>> 3febec9e26692bdbade2840104f812eca5f04e9d
     @Builder.Default
     private ApplicationStatus status = ApplicationStatus.SUBMITTED;
 
@@ -57,6 +49,12 @@ public class Application {
 
     @Column(name = "admin_notes", columnDefinition = "TEXT")
     private String adminNotes;
+    
+    @Column(name = "registration_number", unique = true, length = 50)
+    private String registrationNumber;
+    
+    @Column(name = "certificate_path")
+    private String certificatePath;
 
     // ── Relations ──────────────────────────────────────────────────────────
     @OneToOne(mappedBy = "application", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

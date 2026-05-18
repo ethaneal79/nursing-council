@@ -59,7 +59,7 @@ export default function AdminPortalPage({ token }) {
 
     console.log("USERS API:", res);
 
-    setUsers(Array.isArray(res.data) ? res.data : []);
+    setUsers(Array.isArray(res) ? res : res.data || []);
 
   } catch (e) {
     console.error(e);
@@ -189,42 +189,97 @@ export default function AdminPortalPage({ token }) {
               </tr>
             </thead>
             <tbody>
-              {Array.isArray(users) && users.map((u, i) => (
-                <tr key={u.id} style={{ borderTop: `1px solid ${COLORS.border}`, background: i % 2 === 0 ? '#fff' : '#fafbfd' }}>
-                  <td style={{ padding: '10px 14px', fontSize: 14, fontWeight: 600 }}>{u.username}</td>
-                  <td style={{ padding: '10px 14px', fontSize: 14 }}>{u.fullName}</td>
-                  <td style={{ padding: '10px 14px', fontSize: 13, color: COLORS.textMuted }}>{u.email}</td>
-                  <td style={{ padding: '10px 14px' }}>{badge(u.role)}</td>
-                  <td style={{ padding: '10px 14px' }}>
-                    <span style={{ color: u.active ? COLORS.success : COLORS.danger, fontWeight: 600, fontSize: 13 }}>
-                      {u.active ? '✓ Active' : '✗ Inactive'}
-                    </span>
-                  </td>
-                  <td style={{ padding: '10px 14px' }}>
-                    {u.role !== 'SUPERUSER' && (
-                      <div style={{ display: 'flex', gap: 6 }}>
-                        <select
-                          value={u.role}
-                          onChange={e => handleChangeRole(u.id, e.target.value)}
-                          style={{ fontSize: 12, padding: '4px 6px', border: `1px solid ${COLORS.border}`, borderRadius: 4, cursor: 'pointer' }}
-                        >
-                          {ROLES.map(r => <option key={r} value={r}>{r.replace('_', ' ')}</option>)}
-                        </select>
-                        <button onClick={() => handleToggleActive(u)} style={{
-                          fontSize: 12, padding: '4px 10px', borderRadius: 4, cursor: 'pointer',
-                          border: 'none', fontWeight: 600,
-                          background: u.active ? COLORS.dangerBg : COLORS.successBg,
-                          color: u.active ? COLORS.danger : COLORS.success
-                        }}>
-                          {u.active ? 'Deactivate' : 'Activate'}
-                        </button>
-                      </div>
-                    )}
+              {Array.isArray(users) && users.length > 0 ? (
+                users.map((u, i) => (
+                  <tr
+                    key={u.id}
+                    style={{
+                      borderTop: `1px solid ${COLORS.border}`,
+                      background: i % 2 === 0 ? '#fff' : '#fafbfd'
+                    }}
+                  >
+                    <td style={{ padding: '10px 14px', fontSize: 14, fontWeight: 600 }}>
+                      {u.username}
+                    </td>
+
+                    <td style={{ padding: '10px 14px', fontSize: 14 }}>
+                      {u.fullName}
+                    </td>
+
+                    <td style={{ padding: '10px 14px', fontSize: 13, color: COLORS.textMuted }}>
+                      {u.email}
+                    </td>
+
+                    <td style={{ padding: '10px 14px' }}>
+                      {badge(u.role)}
+                    </td>
+
+                    <td style={{ padding: '10px 14px' }}>
+                      <span
+                        style={{
+                          color: u.active ? COLORS.success : COLORS.danger,
+                          fontWeight: 600,
+                          fontSize: 13
+                        }}
+                      >
+                        {u.active ? '✓ Active' : '✗ Inactive'}
+                      </span>
+                    </td>
+
+                    <td style={{ padding: '10px 14px' }}>
+                      {u.role !== 'SUPERUSER' ? (
+                        <div style={{ display: 'flex', gap: 6 }}>
+                          <select
+                            value={u.role}
+                            onChange={e => handleChangeRole(u.id, e.target.value)}
+                            style={{
+                              fontSize: 12,
+                              padding: '4px 6px',
+                              border: `1px solid ${COLORS.border}`,
+                              borderRadius: 4
+                            }}
+                          >
+                            {ROLES.map(r => (
+                              <option key={r} value={r}>
+                                {r.replace('_', ' ')}
+                              </option>
+                            ))}
+                          </select>
+
+                          <button
+                            onClick={() => handleToggleActive(u)}
+                            style={{
+                              fontSize: 12,
+                              padding: '4px 10px',
+                              borderRadius: 4,
+                              border: 'none',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            {u.active ? 'Deactivate' : 'Activate'}
+                          </button>
+                        </div>
+                      ) : (
+                        <span style={{ fontSize: 12, color: COLORS.textMuted }}>
+                          Superuser
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan={6}
+                    style={{
+                      padding: 30,
+                      textAlign: 'center',
+                      color: COLORS.textMuted
+                    }}
+                  >
+                    No users found
                   </td>
                 </tr>
-              ))}
-              {users.length === 0 && (
-                <tr><td colSpan={6} style={{ padding: 30, textAlign: 'center', color: COLORS.textMuted }}>No users found</td></tr>
               )}
             </tbody>
           </table>

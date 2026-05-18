@@ -13,14 +13,13 @@ import java.util.List;
 public class ApplicationResponse {
     private Long              id;
     private String            referenceNumber;
+    private String 			  registrationNumber;
+    private String 			  certificateUrl;
     private ApplicationType   applicationType;
     private ApplicationStatus status;
     private String            applicantName;
-    private String            applicantEmail;
-    private String            applicantMobile;
     private String            email;
     private String            mobile;
-    private String            rejectionReason;
     private OffsetDateTime    submittedAt;
     private OffsetDateTime    lastUpdatedAt;
     private List<StatusStep>  statusSteps;

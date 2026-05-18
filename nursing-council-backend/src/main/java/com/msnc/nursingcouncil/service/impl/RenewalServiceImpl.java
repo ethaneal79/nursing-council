@@ -39,19 +39,51 @@ public class RenewalServiceImpl implements RenewalService {
                         "No nurse found with registration number: " + registrationNumber));
 
         Applicant applicant = nurse.getApplicant();
-        if (!applicant.getMobile().endsWith(mobile.replaceAll("[^0-9]", "").substring(
-                Math.max(0, mobile.replaceAll("[^0-9]", "").length() - 10)))) {
-            throw new ValidationException("Mobile number does not match our records");
+
+        String cleanedMobile = mobile.replaceAll("[^0-9]", "");
+
+        boolean mobileMatches = applicant.getMobile()
+                .replaceAll("[^0-9]", "")
+                .endsWith(
+                        cleanedMobile.substring(
+                                Math.max(0, cleanedMobile.length() - 10)
+                        )
+                );
+
+        boolean nameMatches = applicant.getFullName()
+                .trim()
+                .equalsIgnoreCase(fullName.trim());
+
+        if (!mobileMatches) {
+            throw new ValidationException(
+                    "Mobile number does not match our records"
+            );
         }
 
-        boolean active = nurse.getIsActive() && !nurse.getValidUntil().isBefore(LocalDate.now());
+        if (!nameMatches) {
+            throw new ValidationException(
+                    "Full name does not match our records"
+            );
+        }
+
+        boolean active = Boolean.TRUE.equals(nurse.getIsActive()) &&
+                nurse.getValidUntil() != null &&
+                !nurse.getValidUntil().isBefore(LocalDate.now());
         return VerificationResponse.builder()
                 .valid(true)
                 .registrationNumber(nurse.getRegistrationNumber())
                 .name(applicant.getFullName())
-                .course(nurse.getCourseName().getDisplayName())
+                .course(
+                        nurse.getCourseName() != null
+                                ? nurse.getCourseName().getDisplayName()
+                                : "Not Available"
+                )
                 .institution(nurse.getInstitutionName())
-                .validUntil(nurse.getValidUntil())
+                .validUntil(
+                        nurse.getValidUntil() != null
+                                ? nurse.getValidUntil()
+                                : LocalDate.now()
+                )
                 .status(active ? "Active" : "Expired")
                 .build();
     }

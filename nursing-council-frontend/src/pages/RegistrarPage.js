@@ -472,17 +472,23 @@ export default function RegistrarPage({ token }) {
   const [msg, setMsg]           = useState(null);
   const [loading, setLoading]   = useState(false);
 
-  const loadApps = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await registrarGetApplications(token);
-      setApps(Array.isArray(res.data) ? res.data : res.data?.content || []);
-    } catch (e) {
-      setMsg({ type: 'error', text: e.message });
-      setApps([]);
-    }
-    setLoading(false);
-  }, [token]);
+const loadApps = useCallback(async () => {
+  setLoading(true);
+
+  try {
+    const res = await registrarGetApplications(token);
+
+    console.log("REGISTRAR API:", res);
+
+    setApps(Array.isArray(res) ? res : res.data || []);
+
+  } catch (e) {
+    setMsg({ type: 'error', text: e.message });
+    setApps([]);
+  }
+
+  setLoading(false);
+}, [token]);
 
   useEffect(() => { loadApps(); }, [loadApps]);
 
